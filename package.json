@@ -1,6 +1,6 @@
 {
   "name": "@fczbkk/config-mask",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Helper that takes care of validating, sanitizing and coercing of complex config objects.",
   "repository": {
     "type": "git",
