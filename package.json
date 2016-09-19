@@ -1,0 +1,67 @@
+{
+  "name": "@fczbkk/config-mask",
+  "version": "0.0.1",
+  "description": "Helper that takes care of validating, sanitizing and coercing of complex config objects.",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/fczbkk/config-mask.git"
+  },
+  "author": {
+    "name": "Riki Fridrich",
+    "email": "riki@fczbkk.com",
+    "url": "https://github.com/fczbkk"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fczbkk/config-mask/issues",
+    "email": "riki@fczbkk.com"
+  },
+  "homepage": "https://github.com/fczbkk/config-mask#readme",
+  "scripts": {
+    "dev": "npm run test:dev",
+    "test:dev": "npm run test -- --no-single-run --auto-watch",
+    "test": "cross-env NODE_ENV=es5 karma start ./karma.conf.js",
+    "cleanup": "rimraf temp lib module",
+    "prebuild": "npm run eslint:build && npm run cleanup && npm run test",
+    "build": "npm run compile",
+    "compile": "npm run compile:es5 && npm run compile:es6",
+    "compile:es5": "cross-env NODE_ENV=es5 webpack --config ./webpack.config.js",
+    "compile:es6": "cross-env NODE_ENV=es6 babel src -d module",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "preversion": "npm run cleanup && npm prune && npm install",
+    "postversion": "git push && git push --tags && npm publish --access=public",
+    "version": "npm run build && npm run doc && npm run changelog && git add -A",
+    "doc": "documentation readme ./src/index.js -s 'Documentation'",
+    "eslint": "eslint ./{src,test}/**/*.js",
+    "eslint:build": "npm run eslint -- --max-warnings 0"
+  },
+  "main": "lib/index.js",
+  "module": "module/index.js",
+  "webpack": "module/index.js",
+  "jsnext:main": "module/index.js",
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-plugin-transform-object-assign": "^6.8.0",
+    "babel-preset-es2015": "^6.14.0",
+    "conventional-changelog-cli": "^1.2.0",
+    "documentation": "^4.0.0-beta10",
+    "eslint": "^3.5.0",
+    "eslint-loader": "^1.5.0",
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.3.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.0.2",
+    "karma-jasmine-diff-reporter": "^0.6.2",
+    "karma-mocha-reporter": "^2.1.0",
+    "karma-phantomjs-launcher": "^1.0.2",
+    "karma-webpack": "^1.8.0",
+    "mocha": "^3.0.2",
+    "phantomjs-prebuilt": "^2.1.12",
+    "rimraf": "^2.5.4",
+    "webpack": "^1.13.2"
+  },
+  "dependencies": {
+    "@inlinemanual/coerce": "^1.0.0"
+  }
+}
