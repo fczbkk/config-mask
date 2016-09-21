@@ -9,6 +9,7 @@ import constructCoertor from '@inlinemanual/coerce';
  * @property {Array} [values] - If `type` is "set", this is the list of valid values.
  * @property {Object} [properties] - If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
  * @property {Function} [parse] - If set, it will be used to transform input before it is being sanitized.
+ * @property {Function} [validate] - When sanitizing, passes parsed input through validator. If it does not pass, default value is used instead.
  */
 
 
@@ -48,9 +49,15 @@ export default class ConfigMask {
    * @returns {*}
    */
   sanitize (input) {
+    const default_value = getDefaultValue(this._options);
     let result = null;
 
     input = this.parse(input);
+
+    // ignore input if it is not valid, default value will be used
+    if (!this.validate(input)) {
+      input = default_value;
+    }
 
     switch (this._options.type) {
 
@@ -60,10 +67,6 @@ export default class ConfigMask {
       }
 
       case 'set': {
-        // if default value is not set, use first available value
-        const default_value = (typeof this._options.default === 'undefined')
-          ? this._options.values[0]
-          : this._options.default;
         result = (this._options.values.indexOf(input) === -1)
           ? default_value
           : input;
@@ -78,7 +81,7 @@ export default class ConfigMask {
 
     }
 
-    return (result === null) ? this._options.default : result;
+    return (result === null) ? default_value : result;
   }
 
   /**
@@ -97,6 +100,25 @@ export default class ConfigMask {
     return (typeof this._options.parse === 'function')
       ? this._options.parse(input)
       : input;
+  }
+
+  /**
+   * Validates input. Used to check parsed input before being used in sanitation.
+   * @param input
+   * @returns {boolean}
+   *
+   * @example <caption>Limit maximum length of input.</caption>
+   * var max_three_characters = new ConfigMask({
+   *   type: 'text',
+   *   validate: function (input) {return input.length <= 3;}
+   * });
+   * max_three_characters.sanitize('aaa'); // 'aaa'
+   * max_three_characters.sanitize('aaabbb'); // ''
+   */
+  validate (input) {
+    return (typeof this._options.validate === 'function')
+      ? !!this._options.validate(input)
+      : true;
   }
 
 }
@@ -136,4 +158,20 @@ function handleObjectType (input, config) {
   });
 
   return result;
+}
+
+
+function getDefaultValue (options = {}) {
+  switch (options.type) {
+
+    case 'set':
+      // if default value is not set, use first available value
+      return (typeof options.default === 'undefined')
+        ? options.values[0]
+        : options.default;
+
+    default:
+      return options.default;
+
+  }
 }
