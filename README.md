@@ -58,8 +58,20 @@ var set_value = new ConfigMask({
 // use valid value
 set_value.sanitize('aaa'); // 'aaa'
 
-// use default value on invalid input
+// use default value on missing or invalid input
+set_value.sanitize(); // 'aaa'
 set_value.sanitize('xxx'); // 'aaa'
+```
+
+If you don't set default value, first of the valid values will be used:
+
+```javascript
+var set_value = new ConfigMask({
+  type: 'set',
+  values: ['aaa', 'bbb']
+});
+
+set_value.sanitize(); // 'aaa'
 ```
 
 ### Complex objects

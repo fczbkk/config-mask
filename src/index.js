@@ -57,8 +57,12 @@ export default class ConfigMask {
       }
 
       case 'set': {
+        // if default value is not set, use first available value
+        const default_value = (typeof this._options.default === 'undefined')
+          ? this._options.values[0]
+          : this._options.default;
         result = (this._options.values.indexOf(input) === -1)
-          ? this._options.default
+          ? default_value
           : input;
         break;
       }

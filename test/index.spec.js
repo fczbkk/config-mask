@@ -36,14 +36,6 @@ describe('Config Mask', function () {
     expect(x.sanitize('xxx')).toEqual(0);
   });
 
-  it('should handle set config', function () {
-    x.setOptions(unit_config);
-    expect(x.sanitize()).toEqual('px');
-    expect(x.sanitize('px')).toEqual('px');
-    expect(x.sanitize('%')).toEqual('%');
-    expect(x.sanitize('xxx')).toEqual('px');
-  });
-
   it('should handle complex config', function () {
     x.setOptions(size_config);
     expect(x.sanitize()).toEqual({value: 0, unit: 'px'});
