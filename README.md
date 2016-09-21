@@ -151,6 +151,7 @@ ConfigMask's configuration object.
 -   `default` **\[any]** Default value to be used when input is invalid or missing.
 -   `values` **\[[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)]** If `type` is "set", this is the list of valid values.
 -   `properties` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
+-   `parse` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** If set, it will be used to transform input before it is being sanitized.
 
 ### ConfigMask
 
@@ -187,6 +188,28 @@ Applies config mask to input and returns sanitized value.
 **Parameters**
 
 -   `input` **\[any]** 
+
+Returns **any** 
+
+#### parse
+
+Apply parse function on input, return unchanged input if not set.
+
+**Parameters**
+
+-   `input`  
+
+**Examples**
+
+_Add prefix to all texts._
+
+```javascript
+var prefixed_text = new ConfigMask({
+  type: 'text',
+  parse: function (input) {return 'bbb' + input;}
+});
+prefixed_text.sanitize('aaa'); // 'aaabbb'
+```
 
 Returns **any** 
 

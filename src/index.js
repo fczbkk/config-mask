@@ -8,6 +8,7 @@ import constructCoertor from '@inlinemanual/coerce';
  * @property {*} [default] - Default value to be used when input is invalid or missing.
  * @property {Array} [values] - If `type` is "set", this is the list of valid values.
  * @property {Object} [properties] - If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
+ * @property {Function} [parse] - If set, it will be used to transform input before it is being sanitized.
  */
 
 
@@ -49,6 +50,8 @@ export default class ConfigMask {
   sanitize (input) {
     let result = null;
 
+    input = this.parse(input);
+
     switch (this._options.type) {
 
       case 'object': {
@@ -76,6 +79,24 @@ export default class ConfigMask {
     }
 
     return (result === null) ? this._options.default : result;
+  }
+
+  /**
+   * Apply parse function on input, return unchanged input if not set.
+   * @param input
+   * @returns {*}
+   *
+   * @example <caption>Add prefix to all texts.</caption>
+   * var prefixed_text = new ConfigMask({
+   *   type: 'text',
+   *   parse: function (input) {return 'bbb' + input;}
+   * });
+   * prefixed_text.sanitize('aaa'); // 'aaabbb'
+   */
+  parse (input) {
+    return (typeof this._options.parse === 'function')
+      ? this._options.parse(input)
+      : input;
   }
 
 }
