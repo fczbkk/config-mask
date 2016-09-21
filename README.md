@@ -152,6 +152,7 @@ ConfigMask's configuration object.
 -   `values` **\[[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)]** If `type` is "set", this is the list of valid values.
 -   `properties` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
 -   `parse` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** If set, it will be used to transform input before it is being sanitized.
+-   `validate` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** When sanitizing, passes parsed input through validator. If it does not pass, default value is used instead.
 
 ### ConfigMask
 
@@ -212,6 +213,29 @@ prefixed_text.sanitize('aaa'); // 'aaabbb'
 ```
 
 Returns **any** 
+
+#### validate
+
+Validates input. Used to check parsed input before being used in sanitation.
+
+**Parameters**
+
+-   `input`  
+
+**Examples**
+
+_Limit maximum length of input._
+
+```javascript
+var max_three_characters = new ConfigMask({
+  type: 'text',
+  validate: function (input) {return input.length <= 3;}
+});
+max_three_characters.sanitize('aaa'); // 'aaa'
+max_three_characters.sanitize('aaabbb'); // ''
+```
+
+Returns **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
 ## Bug reports, feature requests and contact
 
