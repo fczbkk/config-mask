@@ -27,8 +27,7 @@ var webpack_config = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: ['babel-loader', 'eslint-loader'],
-        exclude: /node_modules/
+        loaders: ['babel-loader', 'eslint-loader']
       }
     ]
   }
