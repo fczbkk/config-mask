@@ -1,4 +1,5 @@
 import constructCoertor from '@inlinemanual/coerce';
+import arrayReduce from 'array-reduce-prototypejs-fix';
 
 
 /**
@@ -60,6 +61,11 @@ export default class ConfigMask {
     }
 
     switch (this._options.type) {
+
+      case 'any': {
+        result = typeof input === 'undefined' ? default_value : input;
+        break;
+      }
 
       case 'object': {
         result = handleObjectType(input, this._options);
@@ -147,17 +153,30 @@ function handleObjectType (input, config) {
     input = {};
   }
 
-  const result = {};
+  // if properties is an array, convert it to object of any types
+  // TODO refactor
+  if (Array.isArray(config.properties)) {
+    config.properties = arrayReduce(config.properties, function (previous, current) {
+      previous[current] = {type: 'any'};
+      return previous;
+    }, {});
+  }
 
-  Object.keys(config.properties).forEach((key) => {
-    const val = config.properties[key];
-    const sub_mask = (val instanceof ConfigMask)
-      ? val
-      : new ConfigMask(val);
-    result[key] = sub_mask.sanitize(input[key]);
-  });
+  if (typeof config.properties === 'undefined') {
+    return input;
+  } else {
+    const result = {};
 
-  return result;
+    Object.keys(config.properties).forEach((key) => {
+      const val = config.properties[key];
+      const sub_mask = (val instanceof ConfigMask)
+        ? val
+        : new ConfigMask(val);
+      result[key] = sub_mask.sanitize(input[key]);
+    });
+
+    return result;
+  }
 }
 
 

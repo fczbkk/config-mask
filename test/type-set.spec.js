@@ -1,7 +1,7 @@
 import ConfigMask from './../src/';
 
 
-describe('Config Mask', function () {
+describe('type: set', function () {
 
   let x = new ConfigMask({
     type: 'set',

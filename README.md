@@ -44,6 +44,44 @@ numeric_value.sanitize(100);  // 100
 numeric_value.sanitize('100');  // 100
 ```
 
+### Any value
+
+You can use type `any` to accept any type of input. It will not check the type nor sanitize it to any specific type.
+
+```javascript
+var any_value = new ConfigMask({
+  type: 'any'
+});
+
+any_value.sanitize(); // undefined
+any_value.sanitize('aaa') // 'aaa'
+any_value.sanitize(123) // '123'
+```
+
+You can still use any other options. For example default value, which will be used when input is undefined:
+
+```javascript
+var any_value = new ConfigMask({
+  type: 'any',
+  default: 'n/a'
+});
+
+any_value.sanitize(); // 'n/a'
+any_value.sanitize('aaa') // 'aaa'
+```
+
+Or you can use parser to transform input value:
+
+```javascript
+var any_value = new ConfigMask({
+  type: 'any',
+  parse: function (input) {return typeof input;}
+});
+
+any_value.sanitize(); // 'undefined'
+any_value.sanitize('aaa') // 'string'
+```
+
 ### Set
 
 You can define set of valid values that can be used.
@@ -72,6 +110,38 @@ var set_value = new ConfigMask({
 });
 
 set_value.sanitize(); // 'aaa'
+```
+
+### Simple objects
+
+You can simply set the value to be an object:
+
+```javascript
+var my_object = new ConfigMask({
+  type: 'object'
+});
+
+my_object.sanitize(); // {}
+my_object.sanitize('aaa'); // {}
+my_object.sanitize({aaa: 'bbb'}); // {aaa: 'bbb'}
+```
+
+You can define a list of properties that the resulting object should have. Properties not on the list will be ignored. Missing properties will be added with `undefined` value:
+
+```javascript
+var person_name = new ConfigMask({
+  type: 'object',
+  properties: ['first_name', 'last_name']
+});
+
+var sanitized_name = person_name.sanitize({
+  first_name: 'John',
+  occupation: 'programmer'
+});
+
+sanitized_name.first_name; // 'John'
+sanitized_name.last_name; // undefined
+sanitized_name.occupation; // undefined (ignored)
 ```
 
 ### Complex objects

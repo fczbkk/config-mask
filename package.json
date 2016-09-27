@@ -63,6 +63,7 @@
     "webpack": "^1.13.2"
   },
   "dependencies": {
-    "@inlinemanual/coerce": "^1.2.0"
+    "@inlinemanual/coerce": "^1.2.0",
+    "array-reduce-prototypejs-fix": "^1.1.1"
   }
 }
