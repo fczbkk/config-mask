@@ -1,3 +1,13 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/fczbkk/config-mask/compare/v1.3.0...v1.4.0) (2016-09-27)
+
+
+### Features
+
+* add type `any` and object with just list of properties ([3f5468e](https://github.com/fczbkk/config-mask/commit/3f5468e))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/fczbkk/config-mask/compare/v1.2.0...v1.3.0) (2016-09-26)
 
