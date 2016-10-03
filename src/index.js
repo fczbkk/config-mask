@@ -9,6 +9,7 @@ import arrayReduce from 'array-reduce-prototypejs-fix';
  * @property {*} [default] - Default value to be used when input is invalid or missing.
  * @property {Array} [values] - If `type` is "set", this is the list of valid values.
  * @property {Object} [properties] - If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
+ * @property {Array.<Configuration|ConfigMask>} [submasks] - List of sub-masks to be used when type is set to "combined". Sub-masks are evaluated in given order. First one that returns non-null value is used.
  * @property {Function} [parse] - If set, it will be used to transform input before it is being sanitized.
  * @property {Function} [validate] - When sanitizing, passes parsed input through validator. If it does not pass, default value is used instead.
  */
@@ -76,6 +77,16 @@ export default class ConfigMask {
         result = (this._options.values.indexOf(input) === -1)
           ? default_value
           : input;
+        break;
+      }
+
+      case 'combined': {
+        const submasks = this._options.submasks.map(getConfigMask);
+        result = arrayReduce(submasks, function (previous, current) {
+          return previous === null
+            ? current.sanitize(input)
+            : previous;
+        }, null);
         break;
       }
 
@@ -153,25 +164,16 @@ function handleObjectType (input, config) {
     input = {};
   }
 
-  // if properties is an array, convert it to object of any types
-  // TODO refactor
-  if (Array.isArray(config.properties)) {
-    config.properties = arrayReduce(config.properties, function (previous, current) {
-      previous[current] = {type: 'any'};
-      return previous;
-    }, {});
-  }
+  const properties_config = normalizePropertiesList(config.properties);
 
-  if (typeof config.properties === 'undefined') {
+  if (typeof properties_config === 'undefined') {
     return input;
   } else {
     const result = {};
 
-    Object.keys(config.properties).forEach((key) => {
-      const val = config.properties[key];
-      const sub_mask = (val instanceof ConfigMask)
-        ? val
-        : new ConfigMask(val);
+    Object.keys(properties_config).forEach((key) => {
+      const val = properties_config[key];
+      const sub_mask = getConfigMask(val);
       result[key] = sub_mask.sanitize(input[key]);
     });
 
@@ -180,6 +182,29 @@ function handleObjectType (input, config) {
 }
 
 
+/**
+ * Transform array of properties to config object, if necessary.
+ * @param {Object|Array} properties
+ * @returns {Object}
+ * @ignore
+ */
+function normalizePropertiesList (properties) {
+  if (Array.isArray(properties)) {
+    return arrayReduce(properties, function (previous, current) {
+      previous[current] = {type: 'any'};
+      return previous;
+    }, {});
+  }
+  return properties;
+}
+
+
+/**
+ * Selects default value based on type.
+ * @param {Object} options
+ * @returns {*}
+ * @ignore
+ */
 function getDefaultValue (options = {}) {
   switch (options.type) {
 
@@ -193,4 +218,17 @@ function getDefaultValue (options = {}) {
       return options.default;
 
   }
+}
+
+
+/**
+ * Accepts either config object or ConfigMask. Makes sure to return ConfigMask.
+ * @param {Object|ConfigMask} input
+ * @returns {ConfigMask}
+ * @ignore
+ */
+function getConfigMask (input) {
+  return (input instanceof ConfigMask)
+    ? input
+    : new ConfigMask(input);
 }
