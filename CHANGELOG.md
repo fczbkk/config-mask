@@ -1,3 +1,13 @@
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/fczbkk/config-mask/compare/v1.4.0...v1.5.0) (2016-10-03)
+
+
+### Features
+
+* add "combined" type ([5a3283f](https://github.com/fczbkk/config-mask/commit/5a3283f))
+
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/fczbkk/config-mask/compare/v1.3.0...v1.4.0) (2016-09-27)
 
