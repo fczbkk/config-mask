@@ -1,3 +1,13 @@
+<a name="1.6.0"></a>
+# [1.6.0](https://github.com/fczbkk/config-mask/compare/v1.5.0...v1.6.0) (2016-10-05)
+
+
+### Features
+
+* add support for custom value types ([f6eb969](https://github.com/fczbkk/config-mask/commit/f6eb969))
+
+
+
 <a name="1.5.0"></a>
 # [1.5.0](https://github.com/fczbkk/config-mask/compare/v1.4.0...v1.5.0) (2016-10-03)
 

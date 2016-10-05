@@ -267,7 +267,7 @@ ConfigMask's configuration object.
 
 **Properties**
 
--   `type` **\[[string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)]** Identifier of item type (e.g. "number", "array").
+-   `type` **\[([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object))]** Identifier of item type (e.g. "number", "array") or custom config for Coerce object (<https://github.com/InlineManual/coerce/>).
 -   `default` **\[any]** Default value to be used when input is invalid or missing.
 -   `values` **\[[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)]** If `type` is "set", this is the list of valid values.
 -   `properties` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
