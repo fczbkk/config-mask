@@ -112,6 +112,30 @@ var set_value = new ConfigMask({
 set_value.sanitize(); // 'aaa'
 ```
 
+### Custom value types
+
+You can write your own value types, using [Coerce](https://github.com/InlineManual/coerce/).
+
+```javascript
+var array_of_strings = new ConfigMask({
+  type: {
+    string: function (input) {
+      return [input];
+    },
+    array: function (input) {
+      return input.map(function (item) {
+        return item.toString();
+      })
+    }
+  },
+  default: []
+});
+
+array_of_strings.sanitize(); // []
+array_of_strings.sanitize('aaa'); // ['aaa']
+array_of_strings.sanitize(['aaa', 'bbb']); // ['aaa', 'bbb']
+```
+
 ### Simple objects
 
 You can simply set the value to be an object:

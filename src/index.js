@@ -5,7 +5,7 @@ import arrayReduce from 'array-reduce-prototypejs-fix';
 /**
  * ConfigMask's configuration object.
  * @typedef {Object} Configuration
- * @property {string} [type] - Identifier of item type (e.g. "number", "array").
+ * @property {string|Object} [type] - Identifier of item type (e.g. "number", "array") or custom config for Coerce object (https://github.com/InlineManual/coerce/).
  * @property {*} [default] - Default value to be used when input is invalid or missing.
  * @property {Array} [values] - If `type` is "set", this is the list of valid values.
  * @property {Object} [properties] - If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
