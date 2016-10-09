@@ -1,3 +1,13 @@
+<a name="1.7.0"></a>
+# [1.7.0](https://github.com/fczbkk/config-mask/compare/v1.6.0...v1.7.0) (2016-10-09)
+
+
+### Features
+
+* combined type treats strings in submasks as strict type ([90333c3](https://github.com/fczbkk/config-mask/commit/90333c3))
+
+
+
 <a name="1.6.0"></a>
 # [1.6.0](https://github.com/fczbkk/config-mask/compare/v1.5.0...v1.6.0) (2016-10-05)
 
