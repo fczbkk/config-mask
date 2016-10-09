@@ -228,7 +228,33 @@ function getDefaultValue (options = {}) {
  * @ignore
  */
 function getConfigMask (input) {
+  if (typeof input === 'string') {
+    input = {
+      type: constructStrictCoercer(input),
+      default: null
+    };
+  }
+
   return (input instanceof ConfigMask)
     ? input
     : new ConfigMask(input);
+}
+
+
+const non_coercer = {
+  null: null,
+  array: null,
+  string: null,
+  number: null,
+  undefined: null,
+  boolean: null,
+  object: null,
+  function: null
+};
+
+
+function constructStrictCoercer (type) {
+  const overwrite = {};
+  overwrite[type] = (input) => input;
+  return Object.assign({}, non_coercer, overwrite);
 }

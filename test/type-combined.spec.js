@@ -40,4 +40,14 @@ describe('type: dual', function () {
     expect(x.sanitize(['aaa', 'bbb'])).toEqual(['aaa', 'bbb']);
   });
 
+  it('should treat array of types as list of strict types', function () {
+    const mask = new ConfigMask({
+      type: 'combined',
+      submasks: ['function', 'string']
+    });
+    const fn = function () {};
+    expect(mask.sanitize(fn)).toEqual(fn);
+    expect(mask.sanitize('aaa')).toEqual('aaa');
+  });
+
 });
