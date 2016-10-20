@@ -112,6 +112,26 @@ var set_value = new ConfigMask({
 set_value.sanitize(); // 'aaa'
 ```
 
+### List
+
+Same as `set`, but for lists of values from defined set.
+
+```javascript
+var list_value = new ConfigMask({
+  type: 'list',
+  values: ['aaa', 'bbb']
+});
+
+// valid values are fine, invalid ones are filtered out
+list_value.sanitize(['aaa', 'xxx', 'bbb']); // ['aaa', 'bbb']
+
+// single value is converted to array
+list_value.sanitize('aaa'); // ['aaa']
+
+// default value is always empty array
+list_value.sanitize(); // []
+```
+
 ### Custom value types
 
 You can write your own value types, using [Coerce](https://github.com/InlineManual/coerce/).

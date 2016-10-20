@@ -80,6 +80,16 @@ export default class ConfigMask {
         break;
       }
 
+      case 'list': {
+        // convert single-value input to array
+        if (!Array.isArray(input)) {input = [input];}
+        // filter out invalid values
+        result = input.filter(
+          item => this._options.values.indexOf(item) !== -1
+        );
+        break;
+      }
+
       case 'combined': {
         const submasks = this._options.submasks.map(getConfigMask);
         result = arrayReduce(submasks, function (previous, current) {
