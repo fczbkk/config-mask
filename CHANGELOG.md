@@ -1,3 +1,13 @@
+<a name="1.8.0"></a>
+# [1.8.0](https://github.com/fczbkk/config-mask/compare/v1.7.0...v1.8.0) (2016-10-20)
+
+
+### Features
+
+* add "list" type ([4082c10](https://github.com/fczbkk/config-mask/commit/4082c10))
+
+
+
 <a name="1.7.0"></a>
 # [1.7.0](https://github.com/fczbkk/config-mask/compare/v1.6.0...v1.7.0) (2016-10-09)
 
