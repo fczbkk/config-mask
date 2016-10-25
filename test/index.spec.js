@@ -60,4 +60,13 @@ describe('Config Mask', function () {
     expect(size_mask.sanitize({value: 100, unit: '%'})).toEqual({value: 100, unit: '%'});
   });
 
+  it('should handle boolean config', function () {
+    x.setOptions({type: 'boolean', default: false});
+
+    expect(x.sanitize()).toEqual(false, 'default');
+    expect(x.sanitize(false)).toEqual(false, 'false');
+    expect(x.sanitize(true)).toEqual(true, 'true');
+    expect(x.sanitize('aaa')).toEqual(true, 'string');
+  });
+
 });
