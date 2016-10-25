@@ -1,3 +1,13 @@
+<a name="1.9.0"></a>
+# [1.9.0](https://github.com/fczbkk/config-mask/compare/v1.8.0...v1.9.0) (2016-10-25)
+
+
+### Features
+
+* add `boolean` type ([46a776e](https://github.com/fczbkk/config-mask/commit/46a776e))
+
+
+
 <a name="1.8.0"></a>
 # [1.8.0](https://github.com/fczbkk/config-mask/compare/v1.7.0...v1.8.0) (2016-10-20)
 
