@@ -263,6 +263,12 @@ const non_coercer = {
 };
 
 
+/**
+ * Constructs coercer that only lets through selected type and returns `null` for any other type.
+ * @param {string} type
+ * @returns {*}
+ * @ignore
+ */
 function constructStrictCoercer (type) {
   const overwrite = {};
   overwrite[type] = (input) => input;
