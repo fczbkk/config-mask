@@ -69,4 +69,14 @@ describe('Config Mask', function () {
     expect(x.sanitize('aaa')).toEqual(true, 'string');
   });
 
+  it('should call `on_invalid` when input is invalid', function () {
+    const mask = new ConfigMask({
+      type: 'text',
+      validate: function () {return false;},
+      on_invalid: jasmine.createSpy('on_invalid')
+    });
+    mask.sanitize('aaa');
+    expect(mask._options.on_invalid).toHaveBeenCalledWith('aaa');
+  });
+
 });

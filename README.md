@@ -156,6 +156,33 @@ array_of_strings.sanitize('aaa'); // ['aaa']
 array_of_strings.sanitize(['aaa', 'bbb']); // ['aaa', 'bbb']
 ```
 
+### Custom validation
+
+You can create masks with very specific rules using custom validation method.
+
+```javascript
+var positive_number = new ConfigMask({
+  type: 'number',
+  validate: function (input) {return number > 0;},
+  default: 1
+});
+positive_number.sanitize(10); // 10
+positive_number.sanitize(-10); // 1 (default value)
+```
+
+To simplify debugging or error reporting, you can use `on_invalid` method. It will be called when sanitizing the input and it will receive the input as parameter.
+
+```javascript
+var positive_number = new ConfigMask({
+  type: 'number',
+  validate: function (input) {return number > 0;},
+  on_invalid: function (input) {
+    console.log('Only positive numbers allowed. You have used ' + input + '.');
+  },
+  default: 1
+});
+```
+
 ### Simple objects
 
 You can simply set the value to be an object:

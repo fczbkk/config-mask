@@ -12,6 +12,7 @@ import arrayReduce from 'array-reduce-prototypejs-fix';
  * @property {Array.<Configuration|ConfigMask>} [submasks] - List of sub-masks to be used when type is set to "combined". Sub-masks are evaluated in given order. First one that returns non-null value is used.
  * @property {Function} [parse] - If set, it will be used to transform input before it is being sanitized.
  * @property {Function} [validate] - When sanitizing, passes parsed input through validator. If it does not pass, default value is used instead.
+ * @property {Function} [on_invalid] - Called when input is evaluated as invalid when sanitizing.
  */
 
 
@@ -143,9 +144,15 @@ export default class ConfigMask {
    * max_three_characters.sanitize('aaabbb'); // ''
    */
   validate (input) {
-    return (typeof this._options.validate === 'function')
+    const result = (typeof this._options.validate === 'function')
       ? !!this._options.validate(input)
       : true;
+
+    if (result === false && typeof this._options.on_invalid === 'function') {
+      this._options.on_invalid(input);
+    }
+
+    return result;
   }
 
 }
