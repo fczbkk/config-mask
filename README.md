@@ -136,10 +136,10 @@ list_value.sanitize(); // []
 
 Type `list_of` will produce an array with values of specific type.
 
-- You can use `subtype` property to define type of values in array.
-- You can use `submask` property to define ConfigMask that will be applied to values in array.
-- If both `subtype` and `submask` properties are defined, `submask` will be used.
-- If neither `subtype` nor `submask` property is defined, the array will accept values of any types.
+-   You can use `subtype` property to define type of values in array.
+-   You can use `submask` property to define ConfigMask that will be applied to values in array.
+-   If both `subtype` and `submask` properties are defined, `submask` will be used.
+-   If neither `subtype` nor `submask` property is defined, the array will accept values of any types.
 
 ```javascript
 var list_of_strings = new ConfigMask({
@@ -364,9 +364,12 @@ ConfigMask's configuration object.
 -   `values` **\[[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)]** If `type` is "set", this is the list of valid values.
 -   `properties` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
 -   `submasks` **\[[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([Configuration](#configuration) \| [ConfigMask](#configmask))>]** List of sub-masks to be used when type is set to "combined". Sub-masks are evaluated in given order. First one that returns non-null value is used.
+-   `submask` **\[([Configuration](#configuration) \| [ConfigMask](#configmask))]** Mask to be used when type is set to `list_of`. This property has priority over `subtype`
+-   `subtype` **\[([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object))]** Type of value allowed to be used when type is set to `list_of`.
 -   `parse` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** If set, it will be used to transform input before it is being sanitized.
 -   `validate` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** When sanitizing, passes parsed input through validator. If it does not pass, default value is used instead.
 -   `on_invalid` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** Called when input is evaluated as invalid when sanitizing.
+-   `filter` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** If set, it will be used by `list_of` type to filter out values from result.
 
 ### ConfigMask
 

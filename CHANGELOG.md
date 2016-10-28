@@ -1,3 +1,13 @@
+<a name="1.11.0"></a>
+# [1.11.0](https://github.com/fczbkk/config-mask/compare/v1.10.0...v1.11.0) (2016-10-28)
+
+
+### Features
+
+* add type `list_of` ([2efdab5](https://github.com/fczbkk/config-mask/commit/2efdab5))
+
+
+
 <a name="1.10.0"></a>
 # [1.10.0](https://github.com/fczbkk/config-mask/compare/v1.9.0...v1.10.0) (2016-10-28)
 
