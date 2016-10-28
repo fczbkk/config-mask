@@ -10,9 +10,12 @@ import arrayReduce from 'array-reduce-prototypejs-fix';
  * @property {Array} [values] - If `type` is "set", this is the list of valid values.
  * @property {Object} [properties] - If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
  * @property {Array.<Configuration|ConfigMask>} [submasks] - List of sub-masks to be used when type is set to "combined". Sub-masks are evaluated in given order. First one that returns non-null value is used.
+ * @property {Configuration|ConfigMask} [submask] - Mask to be used when type is set to `list_of`. This property has priority over `subtype`
+ * @property {string|Object} [subtype] - Type of value allowed to be used when type is set to `list_of`.
  * @property {Function} [parse] - If set, it will be used to transform input before it is being sanitized.
  * @property {Function} [validate] - When sanitizing, passes parsed input through validator. If it does not pass, default value is used instead.
  * @property {Function} [on_invalid] - Called when input is evaluated as invalid when sanitizing.
+ * @property {Function} [filter] - If set, it will be used by `list_of` type to filter out values from result.
  */
 
 
@@ -98,6 +101,35 @@ export default class ConfigMask {
             ? current.sanitize(input)
             : previous;
         }, null);
+        break;
+      }
+
+      case 'list_of': {
+        // convert single-value input to array
+        if (!Array.isArray(input)) {
+          input = typeof input === 'undefined' ? [] : [input];
+        }
+
+        let {submask, subtype} = this._options;
+
+        if (typeof submask === 'undefined' && typeof subtype === 'undefined') {
+          submask = {type: 'any'};
+        }
+
+        if (typeof submask !== 'undefined') {
+          // submask
+          const mask = getConfigMask(submask);
+          result = input.map(item => mask.sanitize(item));
+        } else {
+          // subtype
+          const coerce = constructCoertor(subtype);
+          result = input.map(coerce);
+        }
+
+        if (typeof this._options.filter === 'function') {
+          result = result.filter(this._options.filter);
+        }
+
         break;
       }
 

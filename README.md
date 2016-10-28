@@ -132,6 +132,51 @@ list_value.sanitize('aaa'); // ['aaa']
 list_value.sanitize(); // []
 ```
 
+### List of...
+
+Type `list_of` will produce an array with values of specific type.
+
+- You can use `subtype` property to define type of values in array.
+- You can use `submask` property to define ConfigMask that will be applied to values in array.
+- If both `subtype` and `submask` properties are defined, `submask` will be used.
+- If neither `subtype` nor `submask` property is defined, the array will accept values of any types.
+
+```javascript
+var list_of_strings = new ConfigMask({
+  type: 'list_of',
+  subtype: 'text'
+});
+list_of_strings.sanitize(['aaa', null, 123]); // ['aaa', '', '123']
+
+var list_of_objects = new ConfigMask({
+  type: 'list_of',
+  submask: {
+    type: 'object',
+    properties: {
+      value: 'number',
+      unit: 'text'
+    },
+    default: {
+      value: 0,
+      unit: 'px'
+    }
+  }
+});
+list_of_objects.sanitize([{value: 10, unit: 'cm'}, 'xxx']);
+// [{value: 10, unit: 'cm'}, {value: 0, unit: 'px'}]
+```
+
+You can use `filter` property to define function for filtering out unwanted values.
+
+```javascript
+var list_of_short_strings = new ConfigMask({
+  type: 'list_of',
+  subtype: 'text',
+  filter: function (input) {return input.length <= 3;}
+});
+list_of_short_strings.sanitize(['aaa', 'abcdefgh', 'bbb']); // ['aaa', 'bbb']
+```
+
 ### Custom value types
 
 You can write your own value types, using [Coerce](https://github.com/InlineManual/coerce/).
