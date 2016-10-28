@@ -1,3 +1,13 @@
+<a name="1.10.0"></a>
+# [1.10.0](https://github.com/fczbkk/config-mask/compare/v1.9.0...v1.10.0) (2016-10-28)
+
+
+### Features
+
+* add `on_invalid` option ([fe8b52f](https://github.com/fczbkk/config-mask/commit/fe8b52f))
+
+
+
 <a name="1.9.0"></a>
 # [1.9.0](https://github.com/fczbkk/config-mask/compare/v1.8.0...v1.9.0) (2016-10-25)
 

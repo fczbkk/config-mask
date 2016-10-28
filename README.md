@@ -321,6 +321,7 @@ ConfigMask's configuration object.
 -   `submasks` **\[[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([Configuration](#configuration) \| [ConfigMask](#configmask))>]** List of sub-masks to be used when type is set to "combined". Sub-masks are evaluated in given order. First one that returns non-null value is used.
 -   `parse` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** If set, it will be used to transform input before it is being sanitized.
 -   `validate` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** When sanitizing, passes parsed input through validator. If it does not pass, default value is used instead.
+-   `on_invalid` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** Called when input is evaluated as invalid when sanitizing.
 
 ### ConfigMask
 
