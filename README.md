@@ -406,6 +406,7 @@ Applies config mask to input and returns sanitized value.
 **Parameters**
 
 -   `input` **\[any]** 
+-   `param` **\[any]** Parameter that will be added to all subsequent calls of `sanitize()`, `parse()` and `validate()`.
 
 Returns **any** 
 
@@ -416,6 +417,7 @@ Apply parse function on input, return unchanged input if not set.
 **Parameters**
 
 -   `input`  
+-   `param` **any** Will be passed as second parameter to the parse function.
 
 **Examples**
 
@@ -438,6 +440,7 @@ Validates input. Used to check parsed input before being used in sanitation.
 **Parameters**
 
 -   `input`  
+-   `param` **any** Will be passed as second parameter to the validate function.
 
 **Examples**
 
@@ -453,6 +456,27 @@ max_three_characters.sanitize('aaabbb'); // ''
 ```
 
 Returns **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+
+### ensureArray
+
+Makes sure that input is an array. If input is undefined, an empty array is returned.
+
+**Parameters**
+
+-   `input` **any** 
+
+Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** 
+
+### applyFilter
+
+If filter function is defined, applies it to data. Otherwise returns data unchanged.
+
+**Parameters**
+
+-   `data` **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** 
+-   `filter_function` **[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)** 
+
+Returns **[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)** 
 
 ## Bug reports, feature requests and contact
 

@@ -1,3 +1,13 @@
+<a name="1.12.0"></a>
+# [1.12.0](https://github.com/fczbkk/config-mask/compare/v1.11.0...v1.12.0) (2016-10-30)
+
+
+### Features
+
+* added parameter to be passed to `sanitize()` method ([3f1b18f](https://github.com/fczbkk/config-mask/commit/3f1b18f))
+
+
+
 <a name="1.11.0"></a>
 # [1.11.0](https://github.com/fczbkk/config-mask/compare/v1.10.0...v1.11.0) (2016-10-28)
 
