@@ -52,28 +52,31 @@ export default class ConfigMask {
   /**
    * Applies config mask to input and returns sanitized value.
    * @param {*} [input]
+   * @param {*} [param] - Parameter that will be added to all subsequent calls of `sanitize()`, `parse()` and `validate()`.
    * @returns {*}
    */
-  sanitize (input) {
+  sanitize (input, param) {
     const default_value = getDefaultValue(this._options);
     let result = null;
 
-    input = this.parse(input);
+    input = this.parse(input, param);
 
     // ignore input if it is not valid, default value will be used
-    if (!this.validate(input)) {
+    if (!this.validate(input, param)) {
       input = default_value;
     }
 
     switch (this._options.type) {
 
       case 'any': {
-        result = typeof input === 'undefined' ? default_value : input;
+        result = (typeof input === 'undefined')
+          ? default_value
+          : input;
         break;
       }
 
       case 'object': {
-        result = handleObjectType(input, this._options);
+        result = handleObjectType(input, this._options, param);
         break;
       }
 
@@ -86,7 +89,7 @@ export default class ConfigMask {
 
       case 'list': {
         // convert single-value input to array
-        if (!Array.isArray(input)) {input = [input];}
+        input = ensureArray(input);
         // filter out invalid values
         result = input.filter(
           item => this._options.values.indexOf(item) !== -1
@@ -98,38 +101,14 @@ export default class ConfigMask {
         const submasks = this._options.submasks.map(getConfigMask);
         result = arrayReduce(submasks, function (previous, current) {
           return previous === null
-            ? current.sanitize(input)
+            ? current.sanitize(input, param)
             : previous;
         }, null);
         break;
       }
 
       case 'list_of': {
-        // convert single-value input to array
-        if (!Array.isArray(input)) {
-          input = typeof input === 'undefined' ? [] : [input];
-        }
-
-        let {submask, subtype} = this._options;
-
-        if (typeof submask === 'undefined' && typeof subtype === 'undefined') {
-          submask = {type: 'any'};
-        }
-
-        if (typeof submask !== 'undefined') {
-          // submask
-          const mask = getConfigMask(submask);
-          result = input.map(item => mask.sanitize(item));
-        } else {
-          // subtype
-          const coerce = constructCoertor(subtype);
-          result = input.map(coerce);
-        }
-
-        if (typeof this._options.filter === 'function') {
-          result = result.filter(this._options.filter);
-        }
-
+        result = handleListOfType(input, this._options, param);
         break;
       }
 
@@ -147,6 +126,7 @@ export default class ConfigMask {
   /**
    * Apply parse function on input, return unchanged input if not set.
    * @param input
+   * @param {*} param - Will be passed as second parameter to the parse function.
    * @returns {*}
    *
    * @example <caption>Add prefix to all texts.</caption>
@@ -156,15 +136,16 @@ export default class ConfigMask {
    * });
    * prefixed_text.sanitize('aaa'); // 'aaabbb'
    */
-  parse (input) {
+  parse (input, param) {
     return (typeof this._options.parse === 'function')
-      ? this._options.parse(input)
+      ? this._options.parse(input, param)
       : input;
   }
 
   /**
    * Validates input. Used to check parsed input before being used in sanitation.
    * @param input
+   * @param {*} param - Will be passed as second parameter to the validate function.
    * @returns {boolean}
    *
    * @example <caption>Limit maximum length of input.</caption>
@@ -175,9 +156,9 @@ export default class ConfigMask {
    * max_three_characters.sanitize('aaa'); // 'aaa'
    * max_three_characters.sanitize('aaabbb'); // ''
    */
-  validate (input) {
+  validate (input, param) {
     const result = (typeof this._options.validate === 'function')
-      ? !!this._options.validate(input)
+      ? !!this._options.validate(input, param)
       : true;
 
     if (result === false && typeof this._options.on_invalid === 'function') {
@@ -191,13 +172,35 @@ export default class ConfigMask {
 
 
 /**
- * Checks whether input is Object (not `null` or `Array`, etc.).
+ * Sanitizes input of type "list_of". Makes sure the result is a list containing only valid values.
  * @param {*} input
- * @returns {boolean}
+ * @param {Configuration} config
+ * @param {*} param
+ * @returns {Object}
  * @ignore
  */
-function isObject (input) {
-  return Object.prototype.toString.call(input) === '[object Object]';
+function handleListOfType (input, config, param) {
+  let {submask, subtype} = config;
+
+  // convert single-value input to array
+  let result = ensureArray(input);
+
+  // if neither `submask` nor `subtype` is defined, pass through any value types
+  if (typeof submask === 'undefined' && typeof subtype === 'undefined') {
+    submask = {type: 'any'};
+  }
+
+  if (typeof submask !== 'undefined') {
+    // submask
+    const mask = getConfigMask(submask);
+    result = result.map(item => mask.sanitize(item, param));
+  } else {
+    // subtype
+    const coerce = constructCoertor(subtype);
+    result = result.map(coerce);
+  }
+
+  return applyFilter(result, config.filter);
 }
 
 
@@ -205,10 +208,11 @@ function isObject (input) {
  * Sanitizes input of type "object". Goes through all properties and sets their value.
  * @param {*} input
  * @param {Configuration} config
+ * @param {*} param
  * @returns {Object}
  * @ignore
  */
-function handleObjectType (input, config) {
+function handleObjectType (input, config, param) {
   if (!isObject(input)) {
     input = {};
   }
@@ -223,7 +227,7 @@ function handleObjectType (input, config) {
     Object.keys(properties_config).forEach((key) => {
       const val = properties_config[key];
       const sub_mask = getConfigMask(val);
-      result[key] = sub_mask.sanitize(input[key]);
+      result[key] = sub_mask.sanitize(input[key], param);
     });
 
     return result;
@@ -272,7 +276,7 @@ function getDefaultValue (options = {}) {
 
 /**
  * Accepts either config object or ConfigMask. Makes sure to return ConfigMask.
- * @param {Object|ConfigMask} input
+ * @param {string|Object|ConfigMask} input
  * @returns {ConfigMask}
  * @ignore
  */
@@ -312,4 +316,40 @@ function constructStrictCoercer (type) {
   const overwrite = {};
   overwrite[type] = (input) => input;
   return Object.assign({}, non_coercer, overwrite);
+}
+
+
+/**
+ * Makes sure that input is an array. If input is undefined, an empty array is returned.
+ * @param {*} input
+ * @returns {Array}
+ */
+function ensureArray (input) {
+  return (!Array.isArray(input))
+    ? (typeof input === 'undefined' ? [] : [input])
+    : input;
+}
+
+
+/**
+ * If filter function is defined, applies it to data. Otherwise returns data unchanged.
+ * @param {Array} data
+ * @param {Function} filter_function
+ * @returns {Array}
+ */
+function applyFilter (data, filter_function) {
+  return (typeof filter_function === 'function')
+    ? data.filter(filter_function)
+    : data;
+}
+
+
+/**
+ * Checks whether input is Object (not `null` or `Array`, etc.).
+ * @param {*} input
+ * @returns {boolean}
+ * @ignore
+ */
+function isObject (input) {
+  return Object.prototype.toString.call(input) === '[object Object]';
 }
