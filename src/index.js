@@ -1,4 +1,4 @@
-import constructCoertor from '@inlinemanual/coerce';
+import constructCoercer from '@inlinemanual/coerce';
 import arrayReduce from 'array-reduce-prototypejs-fix';
 
 
@@ -113,7 +113,18 @@ export default class ConfigMask {
       }
 
       default: {
-        const coerce = constructCoertor(this._options.type);
+        let coercer_config = this._options.type;
+
+        // if type identifier is followed by ":strict", it should be strict
+        if (typeof coercer_config === 'string') {
+          const [type, strict] = coercer_config.split(':');
+          coercer_config = (strict === 'strict')
+            ? constructStrictCoercerConfig(type)
+            : type;
+        }
+
+        const coerce = constructCoercer(coercer_config);
+
         result = coerce(input);
         break;
       }
@@ -196,7 +207,7 @@ function handleListOfType (input, config, param) {
     result = result.map(item => mask.sanitize(item, param));
   } else {
     // subtype
-    const coerce = constructCoertor(subtype);
+    const coerce = constructCoercer(subtype);
     result = result.map(coerce);
   }
 
@@ -283,7 +294,7 @@ function getDefaultValue (options = {}) {
 function getConfigMask (input) {
   if (typeof input === 'string') {
     input = {
-      type: constructStrictCoercer(input),
+      type: constructStrictCoercerConfig(input),
       default: null
     };
   }
@@ -312,7 +323,7 @@ const non_coercer = {
  * @returns {*}
  * @ignore
  */
-function constructStrictCoercer (type) {
+function constructStrictCoercerConfig (type) {
   const overwrite = {};
   overwrite[type] = (input) => input;
   return Object.assign({}, non_coercer, overwrite);
