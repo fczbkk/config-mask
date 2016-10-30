@@ -1,3 +1,13 @@
+<a name="1.13.1"></a>
+## [1.13.1](https://github.com/fczbkk/config-mask/compare/v1.13.0...v1.13.1) (2016-10-30)
+
+
+### Bug Fixes
+
+* pass parameter to `on_invalid` callback ([8e5be65](https://github.com/fczbkk/config-mask/commit/8e5be65))
+
+
+
 <a name="1.13.0"></a>
 # [1.13.0](https://github.com/fczbkk/config-mask/compare/v1.12.0...v1.13.0) (2016-10-30)
 
