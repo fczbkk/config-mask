@@ -1,3 +1,13 @@
+<a name="1.13.0"></a>
+# [1.13.0](https://github.com/fczbkk/config-mask/compare/v1.12.0...v1.13.0) (2016-10-30)
+
+
+### Features
+
+* add basic strict types ([fbffdf5](https://github.com/fczbkk/config-mask/commit/fbffdf5))
+
+
+
 <a name="1.12.0"></a>
 # [1.12.0](https://github.com/fczbkk/config-mask/compare/v1.11.0...v1.12.0) (2016-10-30)
 
