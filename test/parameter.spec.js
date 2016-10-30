@@ -64,4 +64,15 @@ describe('parameter', function () {
     expect(spy).toHaveBeenCalledWith('aaa', 'bbb');
   });
 
+  it('should pass to `on_invalid`', function () {
+    const spy = jasmine.createSpy('validate');
+    const x = new ConfigMask({
+      type: 'text',
+      validate: function () {return false;},
+      on_invalid: spy
+    });
+    x.sanitize('aaa', 'bbb');
+    expect(spy).toHaveBeenCalledWith('aaa', 'bbb');
+  });
+
 });

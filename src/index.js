@@ -173,7 +173,7 @@ export default class ConfigMask {
       : true;
 
     if (result === false && typeof this._options.on_invalid === 'function') {
-      this._options.on_invalid(input);
+      this._options.on_invalid(input, param);
     }
 
     return result;

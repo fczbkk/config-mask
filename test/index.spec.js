@@ -76,7 +76,7 @@ describe('Config Mask', function () {
       on_invalid: jasmine.createSpy('on_invalid')
     });
     mask.sanitize('aaa');
-    expect(mask._options.on_invalid).toHaveBeenCalledWith('aaa');
+    expect(mask._options.on_invalid).toHaveBeenCalledWith('aaa', undefined);
   });
 
 });
