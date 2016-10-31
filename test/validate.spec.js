@@ -41,3 +41,16 @@ describe('validate', function () {
   });
 
 });
+
+describe('validate after', function () {
+
+  it('should be applied in sanitation after being sanitized', function () {
+    const x = new ConfigMask({
+      type: 'text',
+      validate_after: function () {return false;},
+      default: null
+    });
+    expect(x.sanitize('aaa')).toEqual(null);
+  });
+
+});

@@ -14,6 +14,7 @@ import arrayReduce from 'array-reduce-prototypejs-fix';
  * @property {string|Object} [subtype] - Type of value allowed to be used when type is set to `list_of`.
  * @property {Function} [parse] - If set, it will be used to transform input before it is being sanitized.
  * @property {Function} [validate] - When sanitizing, passes parsed input through validator. If it does not pass, default value is used instead.
+ * @property {Function} [validate_after] - Same as `validate`, but applied after the sanitation is done. This is useful for complex object types, where end result of sanitation may depend on result of sanitation of some of the properties.
  * @property {Function} [on_invalid] - Called when input is evaluated as invalid when sanitizing.
  * @property {Function} [filter] - If set, it will be used by `list_of` type to filter out values from result.
  */
@@ -131,6 +132,10 @@ export default class ConfigMask {
 
     }
 
+    if (!this.validate(result, param, this._options.validate_after)) {
+      result = null;
+    }
+
     return (result === null) ? default_value : result;
   }
 
@@ -157,6 +162,7 @@ export default class ConfigMask {
    * Validates input. Used to check parsed input before being used in sanitation.
    * @param input
    * @param {*} param - Will be passed as second parameter to the validate function.
+   * @param {Function} validation_function - Function to be used to validate input.
    * @returns {boolean}
    *
    * @example <caption>Limit maximum length of input.</caption>
@@ -167,9 +173,9 @@ export default class ConfigMask {
    * max_three_characters.sanitize('aaa'); // 'aaa'
    * max_three_characters.sanitize('aaabbb'); // ''
    */
-  validate (input, param) {
-    const result = (typeof this._options.validate === 'function')
-      ? !!this._options.validate(input, param)
+  validate (input, param, validation_function = this._options.validate) {
+    const result = (typeof validation_function === 'function')
+      ? !!validation_function(input, param)
       : true;
 
     if (result === false && typeof this._options.on_invalid === 'function') {

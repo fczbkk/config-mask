@@ -228,6 +228,23 @@ var positive_number = new ConfigMask({
 });
 ```
 
+In some cases, it may be helpful to validate the result after it has been sanitized. For example when dealing with complex objects with various sub-properties, where the end result of sanitation may depend on results of sanitation of properties.
+
+```javascript
+var value_with_unit = ConfigMask({
+  type: 'object',
+  properties: {
+    value: {type: 'number'},
+    unit: {type: 'string'}
+  },
+  default: null,
+  validate_after: function (input) {
+    // if either `value` or `unit` is not set, sanitize to `nul` (default value)
+    return input.value !== 0 && value.unit !== '';
+  }
+});
+```
+
 ### Simple objects
 
 You can simply set the value to be an object:
