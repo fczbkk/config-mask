@@ -1,3 +1,13 @@
+<a name="1.14.0"></a>
+# [1.14.0](https://github.com/fczbkk/config-mask/compare/v1.13.1...v1.14.0) (2016-10-31)
+
+
+### Features
+
+* add `validate_after` ([910b5fe](https://github.com/fczbkk/config-mask/commit/910b5fe))
+
+
+
 <a name="1.13.1"></a>
 ## [1.13.1](https://github.com/fczbkk/config-mask/compare/v1.13.0...v1.13.1) (2016-10-30)
 

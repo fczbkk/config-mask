@@ -385,6 +385,7 @@ ConfigMask's configuration object.
 -   `subtype` **\[([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object))]** Type of value allowed to be used when type is set to `list_of`.
 -   `parse` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** If set, it will be used to transform input before it is being sanitized.
 -   `validate` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** When sanitizing, passes parsed input through validator. If it does not pass, default value is used instead.
+-   `validate_after` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** Same as `validate`, but applied after the sanitation is done. This is useful for complex object types, where end result of sanitation may depend on result of sanitation of some of the properties.
 -   `on_invalid` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** Called when input is evaluated as invalid when sanitizing.
 -   `filter` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)]** If set, it will be used by `list_of` type to filter out values from result.
 
@@ -458,6 +459,7 @@ Validates input. Used to check parsed input before being used in sanitation.
 
 -   `input`  
 -   `param` **any** Will be passed as second parameter to the validate function.
+-   `validation_function` **\[[Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function)](default this.\_options.validate)** Function to be used to validate input.
 
 **Examples**
 
