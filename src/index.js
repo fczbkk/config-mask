@@ -185,6 +185,15 @@ export default class ConfigMask {
     return result;
   }
 
+  /**
+   * Creates exact copy of original object, updates the options with new ones.
+   * @param {Configuration} config
+   * @returns {ConfigMask}
+   */
+  clone (config = {}) {
+    return new ConfigMask(Object.assign({}, this._options, config));
+  }
+
 }
 
 
