@@ -491,6 +491,16 @@ max_three_characters.sanitize('aaabbb'); // ''
 
 Returns **[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
+#### clone
+
+Creates exact copy of original object, updates the options with new ones.
+
+**Parameters**
+
+-   `config` **\[[Configuration](#configuration)](default {})** 
+
+Returns **[ConfigMask](#configmask)** 
+
 ### ensureArray
 
 Makes sure that input is an array. If input is undefined, an empty array is returned.

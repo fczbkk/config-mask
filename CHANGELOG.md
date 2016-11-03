@@ -1,3 +1,13 @@
+<a name="1.15.0"></a>
+# [1.15.0](https://github.com/fczbkk/config-mask/compare/v1.14.0...v1.15.0) (2016-11-03)
+
+
+### Features
+
+* add `clone()` method ([a063ce9](https://github.com/fczbkk/config-mask/commit/a063ce9))
+
+
+
 <a name="1.14.0"></a>
 # [1.14.0](https://github.com/fczbkk/config-mask/compare/v1.13.1...v1.14.0) (2016-10-31)
 
