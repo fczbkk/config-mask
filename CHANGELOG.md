@@ -1,3 +1,8 @@
+<a name="1.15.1"></a>
+## [1.15.1](https://github.com/fczbkk/config-mask/compare/v1.15.0...v1.15.1) (2017-02-16)
+
+
+
 <a name="1.15.0"></a>
 # [1.15.0](https://github.com/fczbkk/config-mask/compare/v1.14.0...v1.15.0) (2016-11-03)
 
