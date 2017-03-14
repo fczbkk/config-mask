@@ -311,6 +311,39 @@ size_config.sanitize({value: 100}); // {value: 100, unit: 'px'}
 size_config.sanitize({xxx: 'yyy'}); // {value: 0, unit: 'px'}
 ```
 
+#### Keep properties
+
+By default, all undefined properties will be removed:
+
+```javascript
+var my_config = {
+  type: 'object',
+  properties: {
+    aaa: 'text'
+  }
+}
+
+// property `ccc` will be removed
+my_config.sanitize({aaa: 'bbb', ccc: 'ddd'}); // {aaa: 'bbb'}
+```
+
+If you want to keep undefined properties intact, add `keep_property` to config with truthy value:
+
+```javascript
+var my_config = {
+  type: 'object',
+  properties: {
+    aaa: 'text'
+  },
+  keep_properties: true
+}
+
+// property `ccc` will remain unchanged
+my_config.sanitize({aaa: 'bbb', ccc: 'ddd'}); // {aaa: 'bbb', ccc: 'ddd'}
+```
+
+
+
 ### Nesting
 
 You can nest ConfigMask objects together, creating very complex and interconnected types.

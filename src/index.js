@@ -9,6 +9,7 @@ import arrayReduce from 'array-reduce-prototypejs-fix';
  * @property {*} [default] - Default value to be used when input is invalid or missing.
  * @property {Array} [values] - If `type` is "set", this is the list of valid values.
  * @property {Object} [properties] - If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
+ * @property {boolean} [keep_properties] - If type is "object" and "properties" are defined, unspecified properties of the object will not be removed.
  * @property {Array.<Configuration|ConfigMask>} [submasks] - List of sub-masks to be used when type is set to "combined". Sub-masks are evaluated in given order. First one that returns non-null value is used.
  * @property {Configuration|ConfigMask} [submask] - Mask to be used when type is set to `list_of`. This property has priority over `subtype`
  * @property {string|Object} [subtype] - Type of value allowed to be used when type is set to `list_of`.
@@ -248,7 +249,9 @@ function handleObjectType (input, config, param) {
   if (typeof properties_config === 'undefined') {
     return input;
   } else {
-    const result = {};
+    const result = (!!config.keep_properties === true)
+      ? Object.assign({}, input)
+      : {};
 
     Object.keys(properties_config).forEach((key) => {
       const val = properties_config[key];
