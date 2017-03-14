@@ -342,8 +342,6 @@ var my_config = {
 my_config.sanitize({aaa: 'bbb', ccc: 'ddd'}); // {aaa: 'bbb', ccc: 'ddd'}
 ```
 
-
-
 ### Nesting
 
 You can nest ConfigMask objects together, creating very complex and interconnected types.
@@ -428,6 +426,7 @@ ConfigMask's configuration object.
 -   `default` **\[any]** Default value to be used when input is invalid or missing.
 -   `values` **\[[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)]** If `type` is "set", this is the list of valid values.
 -   `properties` **\[[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)]** If `type` is "object", this is the list of its properties. The values should be `Configuration` objects.
+-   `keep_properties` **\[[boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)]** If type is "object" and "properties" are defined, unspecified properties of the object will not be removed.
 -   `submasks` **\[[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)&lt;([Configuration](#configuration) \| [ConfigMask](#configmask))>]** List of sub-masks to be used when type is set to "combined". Sub-masks are evaluated in given order. First one that returns non-null value is used.
 -   `submask` **\[([Configuration](#configuration) \| [ConfigMask](#configmask))]** Mask to be used when type is set to `list_of`. This property has priority over `subtype`
 -   `subtype` **\[([string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) \| [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object))]** Type of value allowed to be used when type is set to `list_of`.

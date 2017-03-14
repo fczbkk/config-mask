@@ -1,3 +1,13 @@
+<a name="1.16.0"></a>
+# [1.16.0](https://github.com/fczbkk/config-mask/compare/v1.15.1...v1.16.0) (2017-03-14)
+
+
+### Features
+
+* add `keep_properties` option ([878df73](https://github.com/fczbkk/config-mask/commit/878df73))
+
+
+
 <a name="1.15.1"></a>
 ## [1.15.1](https://github.com/fczbkk/config-mask/compare/v1.15.0...v1.15.1) (2017-02-16)
 
